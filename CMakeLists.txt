@@ -20,9 +20,19 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+
     qt_add_executable(weather
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        taskbarWindow.cpp
+        taskbarWindow.h
+        first_instance.h first_instance.cpp
+        first_instance.ui
+        helpers.h
+        helpers.cpp
+        dummy.h dummy.cpp
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET weather APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -42,7 +52,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(weather PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(weather PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets shell32 user32)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -68,3 +78,4 @@ install(TARGETS weather
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(weather)
 endif()
+
