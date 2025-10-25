@@ -20,7 +20,7 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+    find_package(Qt6 COMPONENTS Core Gui Widgets Network Positioning REQUIRED)
 
     qt_add_executable(weather
         MANUAL_FINALIZATION
@@ -32,6 +32,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         helpers.h
         helpers.cpp
         dummy.h dummy.cpp
+        fetch.h fetch.cpp
+        cityprompt.h cityprompt.cpp cityprompt.ui
+        settings_data.h settings_data.cpp settings_data.ui
+        resources.qrc
 
     )
 # Define target properties for Android with Qt 6 as:
@@ -52,7 +56,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(weather PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets shell32 user32)
+target_link_libraries(weather PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Positioning shell32 user32)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

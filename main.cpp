@@ -8,6 +8,8 @@
 #include "first_instance.h"
 #include <QDialog>
 #include <QThread>
+#include "fetch.h"
+#include "settings_data.h"
 
 void check_first_instance();
 bool first_instance_setup();
@@ -16,11 +18,25 @@ bool first_instance_setup();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    a.setQuitOnLastWindowClosed(false);
+
+
     check_first_instance();
 
     weather *w = new weather();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
+
+    //fetch *f = new fetch;
+
+    //f->getWeather();
+
+    //QTimer::singleShot(10000,w, &QWidget::close);
+
+
+
+
 
 
     return a.exec();

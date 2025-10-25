@@ -18,12 +18,15 @@ public:
 protected:
     void enterEvent(QEnterEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    //void closeEvent(QCloseEvent *event) override;
 private:
     void savePosition();
     void loadPosition(int x = 100, int y = 100);
     int posX, posY, tBarHeight, width, height;
     QTimer *topmostTimer;
     void enforceTopmost();
+
+    QMainWindow *main;
 };
 
 

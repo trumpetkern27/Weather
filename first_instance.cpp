@@ -38,6 +38,9 @@ first_instance::first_instance(QWidget *parent)
     connect(ui->widthSlider, &QSlider::valueChanged,
             this, &first_instance::resizeDummy);
 
+    // connect auto location checkbox
+    connect(ui->locationDetect, &QCheckBox::checkStateChanged, this, &first_instance::saveSettings);
+
     // connect reset button
     connect(ui->resetButton, &QPushButton::clicked, this, &first_instance::reset);
 
@@ -131,10 +134,12 @@ void first_instance::reset() {
     dummy->move(x, y);
 
     ui->widthSlider->setValue(150);
+    ui->locationDetect->setCheckState(Qt::Unchecked);
 
     saveSettings();
 
 }
+
 
 void first_instance::resizeDummy(int value) {
     if (!dummy)
@@ -155,6 +160,7 @@ void first_instance::saveSettings() {
     settings.setValue("winY", dummy->y());
     settings.setValue("width", dummy->width());
     settings.setValue("height", dummy->height());
+    settings.setValue("autoLocation", ui->locationDetect->checkState());
 }
 
 //ensure window is topmost on taskbar

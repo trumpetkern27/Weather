@@ -1,6 +1,7 @@
 #include "taskbarWindow.h"
 #include <windows.h>
 #include "helpers.h"
+#include "mainwindow.h"
 
 
 int posX, posY, tBarHeight, width, height;
@@ -30,6 +31,9 @@ weather::weather() {
     connect(topmostTimer, &QTimer::timeout, this, &weather::enforceTopmost);
     topmostTimer->start(10);
 
+    main = new MainWindow(nullptr);
+
+    qDebug() << "parent" << main->parent();
 }
 
 
@@ -39,10 +43,10 @@ weather::~weather() {
 
 
 void weather::enterEvent(QEnterEvent *event) {
-    MessageBox(NULL, L"ligma", L"", 0);
+    main->show();
 }
 void weather::leaveEvent(QEvent *event) {
-    MessageBox(NULL, L"ligmon't", L"", 0);
+    //MessageBox(NULL, L"ligmon't", L"", 0);
 }
 
 
@@ -67,8 +71,10 @@ void weather::enforceTopmost() {
 }
 
 
-
-
-
+/*
+void weather::closeEvent(QCloseEvent *event){
+    event->ignore();
+}
+*/
 
 

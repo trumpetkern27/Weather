@@ -2,6 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGroupBox>
+#include <QMap>
+#include "settings_data.h"
+#include <QGridLayout>
+#include "fetch.h"
+#include <QApplication>
+#include <QScreen>
+#include "helpers.h"
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +26,21 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void updateVisibleBoxes(const QMap<QString, bool>& settings);
+protected:
+    void leaveEvent(QEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 private:
     Ui::MainWindow *ui;
+    settings_data *settingsDialog;
+
+    QMap<QString, QGroupBox*> propertyBoxMap;
+
+    void initializePropertyMap();
+    void reorganizeGrid();
+    fetch *weather_harvester;
+    QTimer *weather_clock;
+    QPushButton *gear;
+    void openSettings();
 };
 #endif // MAINWINDOW_H
