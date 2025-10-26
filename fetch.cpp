@@ -1,14 +1,15 @@
 // fetch.cpp
 #include "fetch.h"
 #include "cityprompt.h"
+#include <windows.h>
 
 
-/*QString userAgent = QString("WeatherWidget/%1 (UserID/%2)")
+QString userAgent = QString("WeatherWidget/%1 (UserID/%2)")
                         .arg("1.0")
                         .arg(QUuid::createUuid().toString());
-*/
 
-QString userAgent = QString("weather-widget/1.0 (+https://github.com/trumpetkern27/weather)");
+
+//QString userAgent = QString("weather-widget/1.0 (+https://github.com/trumpetkern27/weather)");
 fetch::fetch(QObject *parent) : QObject(parent) {
     manager = new QNetworkAccessManager(this);
 
@@ -22,7 +23,7 @@ void fetch::getWeather() {
 
 
 void fetch::getWeatherData() {
-    qDebug() << "entered get";
+
     QString url = QString("https://api.weather.gov/points/%1,%2").arg(lat, 0, 'f', 4).arg(lon, 0, 'f', 4);
 
     QNetworkRequest request{QUrl(url)};
@@ -31,22 +32,27 @@ void fetch::getWeatherData() {
                          QNetworkRequest::NoLessSafeRedirectPolicy);
     QNetworkReply *reply = manager->get(request);
 
-    qDebug() << "Request URL:" << request.url().toString();
-    qDebug() << "SSL supported:" << QSslSocket::supportsSsl();
-    qDebug() << "Manager:" << manager;
-    qDebug() << "reply object:" << reply;
-
+    // *graceful* error handling
     connect(reply, &QNetworkReply::errorOccurred, this, [reply](QNetworkReply::NetworkError code) {
-        qDebug() << "Network error:" << code << reply->errorString();
+        QString errStr = reply->errorString();
+        QString message = QStringLiteral(
+                              "An error has occurred:\n%1\n\nPlease check your connection or try restarting this application."
+                              ).arg(errStr);
+
+        MessageBoxW(
+            NULL,
+            reinterpret_cast<LPCWSTR>(message.utf16()),
+            L"Error",
+            MB_ICONERROR | MB_OK
+            );
     });
 
-    qDebug() << "connecting...." << userAgent;
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-        qDebug() << "finished signal fired";
+
 
 
         if (reply->error()) {
-            qDebug() << "Error:" << reply->errorString();
             emit errorOccurred(reply->errorString());
         } else {
             QByteArray data = reply->readAll();
@@ -59,22 +65,17 @@ void fetch::getWeatherData() {
             qDebug() << "properties:" << properties;
             QString forecastUrl = properties["forecast"].toString();
 
-            qDebug() << "Forecast URL:" << forecastUrl;
-
             // Now fetch the actual forecast
             getForecast(forecastUrl);
         }
-        qDebug() << "outside if/else";
         reply->deleteLater();
-        qDebug() << "set to delete later";
     });
 
-    qDebug() << "outside connection";
 }
 
+// actually get forecast
 void fetch::getForecast(const QString &forecastUrl) {
 
-    qDebug() << "getting forecast...";
     QNetworkRequest request{QUrl(forecastUrl)};
     request.setHeader(QNetworkRequest::UserAgentHeader, userAgent.toUtf8());
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
@@ -84,7 +85,6 @@ void fetch::getForecast(const QString &forecastUrl) {
     // Connect to THIS specific reply only
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         if (reply->error()) {
-            qDebug() << "Error:" << reply->errorString();
             emit errorOccurred(reply->errorString());
         } else {
             QByteArray data = reply->readAll();
@@ -109,9 +109,6 @@ void fetch::getForecast(const QString &forecastUrl) {
                 emit weatherDataReceived(data);
             }
 
-
-            //qDebug() << "Forecast data:" << data;
-
         }
         reply->deleteLater();
     });
@@ -122,9 +119,6 @@ void fetch::setLocation() {
     QSettings settings("weatherWidget", "weather");
     settings.setValue("lat", lat);
     settings.setValue("lon", lon);
-    qDebug() << "set lat:" << lat << "lon:" << lon;
-
-
 }
 
 void fetch::loadLocation() {
@@ -135,8 +129,6 @@ void fetch::loadLocation() {
 
     bool autoDetect = settings.value("autoLocation", false).toBool();
 
-
-    qDebug() << "load lat:" << lat << "lon:" << lon << "auto:" << autoDetect;
     if (lat == 500 || lon == 500) {
         if (autoDetect) {
             getLocation();
@@ -148,6 +140,7 @@ void fetch::loadLocation() {
     }
 }
 
+// autodetect location
 void fetch::getLocation() {
 
     QGeoPositionInfoSource *source = QGeoPositionInfoSource::createDefaultSource(this);
@@ -156,12 +149,8 @@ void fetch::getLocation() {
         connect(source, &QGeoPositionInfoSource::positionUpdated, this,
                 [this, source](const QGeoPositionInfo &info) {
 
-            qDebug() << "source";
-
             lat = info.coordinate().latitude();
             lon = info.coordinate().longitude();
-
-            qDebug() << "gps loc:" << lat << lon;
 
             setLocation();
             getWeatherData();
@@ -170,9 +159,8 @@ void fetch::getLocation() {
         });
 
         source->requestUpdate();
-    } else {
+    } else { // use ip if geoposition doesn't work
 
-        qDebug() << "ip";
         QNetworkRequest request{QUrl("https://ipapi.co/json/")};
 
         QNetworkReply *reply = manager->get(request);
@@ -186,8 +174,6 @@ void fetch::getLocation() {
                 lat = obj["latitude"].toDouble();
                 lon = obj["longitude"].toDouble();
 
-                qDebug() << "location:" << lat << lon;
-
                 setLocation();
                 getWeatherData();
             }
@@ -198,19 +184,16 @@ void fetch::getLocation() {
 
 }
 
+// prompt location
 void fetch::promptCity() {
 
     cityPrompt *prompt = new cityPrompt();
     prompt->setAttribute(Qt::WA_DeleteOnClose);
 
-
-
     connect(prompt, &cityPrompt::cityEntered, this, [this, prompt](const QString &city) {
-        qDebug() << "entered:" << city;
 
         getCityCoordinates(city, [this, prompt](bool success) {
             if (success) {
-                qDebug() << "coords retreived";
 
                 prompt->setVisible(false);
 
@@ -229,6 +212,7 @@ void fetch::promptCity() {
 
 }
 
+// get city coordinates
 void fetch::getCityCoordinates(const QString &cityName, std::function<void(bool)> callback) {
     QString url = QString("https://nominatim.openstreetmap.org/search?q=%1&format=json&limit=1").arg(cityName);
 
@@ -251,7 +235,6 @@ void fetch::getCityCoordinates(const QString &cityName, std::function<void(bool)
                 lat = location["lat"].toString().toDouble();
                 lon = location["lon"].toString().toDouble();
 
-                qDebug() << "gotma:" << lat << lon;
                 setLocation();
 
                 success = true;

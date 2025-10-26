@@ -36,6 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         cityprompt.h cityprompt.cpp cityprompt.ui
         settings_data.h settings_data.cpp settings_data.ui
         resources.qrc
+        settings_main.h settings_main.cpp settings_main.ui
 
     )
 # Define target properties for Android with Qt 6 as:

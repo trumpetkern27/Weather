@@ -19,8 +19,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    a.setQuitOnLastWindowClosed(false);
-
+    a.setQuitOnLastWindowClosed(false); // ensure child windows don't shut everything down
 
     check_first_instance();
 
@@ -28,20 +27,10 @@ int main(int argc, char *argv[])
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 
-    //fetch *f = new fetch;
-
-    //f->getWeather();
-
-    //QTimer::singleShot(10000,w, &QWidget::close);
-
-
-
-
-
-
     return a.exec();
 }
 
+// check if first instance of running
 void check_first_instance(){
     QSettings settings("weatherWidget", "weather");
     if (!settings.contains("first_instance")) {
@@ -59,13 +48,10 @@ void check_first_instance(){
 
 
 
-
+// setup if first time, ensures returns true after successful completion
 bool first_instance_setup() {
 
-
-
     first_instance *f = new first_instance;
-
 
     f->show();
     f->exec();

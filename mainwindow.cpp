@@ -16,6 +16,16 @@ MainWindow::MainWindow(QWidget *parent)
     initializePropertyMap();
 
 
+    settingsWindow = new settings_main(this);
+    settingsWindow->setWindowFlag(Qt::Dialog);
+    settingsWindow->setWindowModality(Qt::WindowModal);
+    settingsWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(settingsWindow, &settings_main::openAdvanced, this, &MainWindow::openAdvancedSettings);
+    connect(settingsWindow, &QObject::destroyed, this, [this]() {
+        settingsWindow = nullptr;
+    });
+
     settingsDialog = new settings_data(this);
     settingsDialog->setWindowFlag(Qt::Dialog);
     settingsDialog->setWindowModality(Qt::WindowModal);
@@ -33,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
+    // make gear icon
     gear = new QPushButton(this);
 
     gear->setIcon(QIcon::fromTheme("settings", QIcon(":/icons/gear.png")));
@@ -50,23 +60,19 @@ MainWindow::MainWindow(QWidget *parent)
             background: rgba(255,255,255,0.25);
        }
     )");
-
-    //gear->move(width() - gear->width() - 5, 5);
     gear->raise();
 
-    connect(this, &MainWindow::resizeEvent, [=](QResizeEvent*) {
+    connect(this, &MainWindow::resizeEvent, [=](QResizeEvent*) { // ensure remains in top right
         gear->setGeometry(this->width() - 30, 0, 30, 30);
     });
-
     connect(gear, &QPushButton::clicked, this, &MainWindow::openSettings);
 
+
+    // update weather every 10 mins
     weather_harvester = new fetch;
     weather_clock = new QTimer(this);
-
     connect(weather_clock, &QTimer::timeout, weather_harvester, &fetch::getWeather);
-
     weather_clock->start(600000);
-
     QTimer::singleShot(0, weather_harvester, &fetch::getWeather);
 }
 
@@ -114,6 +120,7 @@ void MainWindow::initializePropertyMap()
     propertyBoxMap["checkBoxAtmosphericDispersionIndex"] = ui->groupBoxAtmosphericDispersionIndex;
     propertyBoxMap["checkBoxLowVisibilityOccurrenceRiskIndex"] = ui->groupBoxLowVisibilityOccurrenceRiskIndex;
 }
+
 
 void MainWindow::updateVisibleBoxes(const QMap<QString, bool>& settings)
 {
@@ -193,15 +200,22 @@ void MainWindow::updateVisibleBoxes(const QMap<QString, bool>& settings)
     }
 }
 
-
+// hide when leave - not close, otherwise won't continue to collect weather data
 void MainWindow::leaveEvent(QEvent *event){
     if (settingsDialog && settingsDialog->isVisible()){
+        return;
+    }
+
+    // if return to the box, it won't hide
+    QPoint cur = QCursor::pos();
+    if (cur.x() < parentWidget()->x() + parentWidget()->width() || cur.x() >= parentWidget()->x() ) {
         return;
     }
 
     this->hide();
 }
 
+// ensure geometry is right
 void MainWindow::showEvent(QShowEvent *event) {
     QRect screenGeometry = QApplication::primaryScreen()->availableGeometry();
 
@@ -213,7 +227,8 @@ void MainWindow::showEvent(QShowEvent *event) {
 
 }
 
-void MainWindow::openSettings() {
+// open the settings menu - when it closes, it deletes, so it needs to be reintantiated if it closes
+void MainWindow::openAdvancedSettings() {
     if (!settingsDialog) {
 
         settingsDialog = new settings_data(this);
@@ -224,8 +239,6 @@ void MainWindow::openSettings() {
         connect(settingsDialog, &settings_data::settingsApplied, this, &MainWindow::updateVisibleBoxes);
         settingsDialog->loadSettings();
 
-
-
         connect(settingsDialog, &QObject::destroyed, this, [this]() {
             settingsDialog = nullptr;
         });
@@ -234,4 +247,21 @@ void MainWindow::openSettings() {
     settingsDialog->show();
     settingsDialog->raise();
     settingsDialog->activateWindow();
+}
+
+void MainWindow::openSettings() {
+    if (!settingsWindow) {
+        settingsWindow = new settings_main(this);
+        settingsWindow->setWindowFlag(Qt::Dialog);
+        settingsWindow->setWindowModality(Qt::WindowModal);
+        settingsWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(settingsWindow, &settings_main::openAdvanced, this, &MainWindow::openAdvancedSettings);
+        connect(settingsWindow, &QObject::destroyed, this, [this]() {
+            settingsWindow = nullptr;
+        });
+    }
+    settingsWindow->show();
+    settingsWindow->raise();
+    settingsWindow->activateWindow();
 }

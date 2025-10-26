@@ -31,9 +31,9 @@ weather::weather() {
     connect(topmostTimer, &QTimer::timeout, this, &weather::enforceTopmost);
     topmostTimer->start(10);
 
-    main = new MainWindow(nullptr);
+    // init main window
+    main = new MainWindow(this);
 
-    qDebug() << "parent" << main->parent();
 }
 
 
@@ -41,12 +41,20 @@ weather::~weather() {
     topmostTimer->stop();
 }
 
-
+// show main window
 void weather::enterEvent(QEnterEvent *event) {
     main->show();
 }
+
+// allow for exit horizontally
 void weather::leaveEvent(QEvent *event) {
-    //MessageBox(NULL, L"ligmon't", L"", 0);
+
+    if (main->isVisible()) {
+        QPoint cur = QCursor::pos();
+        if (cur.x() < posX || cur.x() >= posX + width) {
+            main->hide();
+        }
+    }
 }
 
 
@@ -71,10 +79,5 @@ void weather::enforceTopmost() {
 }
 
 
-/*
-void weather::closeEvent(QCloseEvent *event){
-    event->ignore();
-}
-*/
 
 

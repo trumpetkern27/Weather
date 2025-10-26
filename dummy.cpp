@@ -12,8 +12,6 @@ dummy::dummy() {
     setWindowFlags(Qt::Popup | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     setStyleSheet("background-color: lightblue");
     move(x,y);
-    /*setFocusPolicy(Qt::StrongFocus);
-    setAttribute(Qt::WA_MouseTracking, true);*/
     setMouseTracking(true);
 
     show();
@@ -41,8 +39,8 @@ void dummy::flash() {
 
 }
 
+// allow drag along taskbar
 void dummy::mousePressEvent(QMouseEvent *event) {
-    MessageBox(NULL, L"Mouse pressed!", L"Debug", MB_OK);
     isDragging = true;
     dragStart = event->globalPos();
     windowStart = frameGeometry().topLeft();
@@ -57,8 +55,4 @@ void dummy::mouseMoveEvent(QMouseEvent *event) {
 
 void dummy::mouseReleaseEvent(QMouseEvent *event) {
     isDragging = false;
-}
-
-void dummy::enterEvent(QEnterEvent *event) {
-    MessageBox(NULL, L"ligma", L"", 0);
 }

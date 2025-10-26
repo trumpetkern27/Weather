@@ -34,16 +34,4 @@ void cityPrompt::showError() {
     ui->errorLabel->setVisible(true);
 }
 
-/*
-void cityPrompt::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        QString city = ui->cityBox->text();
-        if (!city.isEmpty()) {
-            emit cityEntered(city);
-        }
-    }
-    QWidget::keyPressEvent(event);
-}
-
-*/
 

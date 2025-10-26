@@ -18,6 +18,7 @@ settings_data::~settings_data()
     delete ui;
 }
 
+// select all
 void settings_data::on_selectAllButton_click() {
     QList<QCheckBox*> checkboxes = ui->scrollAreaWidgetContents->findChildren<QCheckBox*>();
     for (QCheckBox* checkbox : checkboxes) {
@@ -26,6 +27,7 @@ void settings_data::on_selectAllButton_click() {
 
 }
 
+// deselect all
 void settings_data::on_deselectAllButton_click() {
     QList<QCheckBox*> checkboxes = ui->scrollAreaWidgetContents->findChildren<QCheckBox*>();
     for (QCheckBox* checkbox : checkboxes) {
@@ -33,12 +35,14 @@ void settings_data::on_deselectAllButton_click() {
     }
 }
 
+// apply settings - emits map from getSettings()
 void settings_data::on_applyButton_click() {
     emit settingsApplied(getSettings());
     this->close();
 
 }
 
+// get settings
 QMap<QString, bool> settings_data::getSettings() const {
     QMap<QString, bool> settings;
     QSettings user_settings("weatherWidget", "weather");
@@ -49,16 +53,10 @@ QMap<QString, bool> settings_data::getSettings() const {
     }
 
     return settings;
-    /*
-    QSettings settings("weatherWidget", "weather");
-    QList<QCheckBox*> checkboxes = ui->scrollAreaWidgetContents->findChildren<QCheckBox*>();
-    for (QCheckBox* checkbox : checkboxes) {
-        settings.setValue(checkbox->objectName(), checkbox->checkState());
-        qDebug() << checkbox->objectName() << checkbox->checkState();
-    }
-    */
+
 }
 
+// load settings - also emits settings map to ensure main window shows saved settings
 void settings_data::loadSettings() {
     QSettings user_settings("weatherWidget", "weather");
     QList<QCheckBox*> checkboxes = ui->scrollAreaWidgetContents->findChildren<QCheckBox*>();

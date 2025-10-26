@@ -11,6 +11,7 @@
 #include <QScreen>
 #include "helpers.h"
 #include <QPushButton>
+#include "settings_main.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,6 +34,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     settings_data *settingsDialog;
+    settings_main *settingsWindow;
 
     QMap<QString, QGroupBox*> propertyBoxMap;
 
@@ -41,6 +43,7 @@ private:
     fetch *weather_harvester;
     QTimer *weather_clock;
     QPushButton *gear;
+    void openAdvancedSettings();
     void openSettings();
 };
 #endif // MAINWINDOW_H
