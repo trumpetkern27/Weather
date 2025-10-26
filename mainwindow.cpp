@@ -202,14 +202,20 @@ void MainWindow::updateVisibleBoxes(const QMap<QString, bool>& settings)
 
 // hide when leave - not close, otherwise won't continue to collect weather data
 void MainWindow::leaveEvent(QEvent *event){
+    if (settingsWindow && settingsWindow->isVisible()) {
+        return;
+    }
+
     if (settingsDialog && settingsDialog->isVisible()){
         return;
     }
 
+
+
     // if return to the box, it won't hide
     QPoint cur = QCursor::pos();
-    if (cur.x() < parentWidget()->x() + parentWidget()->width() || cur.x() >= parentWidget()->x() ) {
-        return;
+    if (cur.x() < parentWidget()->x() + parentWidget()->width() && cur.x() >= parentWidget()->x() ) {
+       return;
     }
 
     this->hide();
