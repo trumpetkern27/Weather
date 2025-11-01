@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    fetch *weather_harvester;
     void updateVisibleBoxes(const QMap<QString, bool>& settings);
 protected:
     void leaveEvent(QEvent *event) override;
@@ -40,7 +40,7 @@ private:
 
     void initializePropertyMap();
     void reorganizeGrid();
-    fetch *weather_harvester;
+
     QTimer *weather_clock;
     QPushButton *gear;
     void openAdvancedSettings();

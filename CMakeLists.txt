@@ -37,6 +37,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settings_data.h settings_data.cpp settings_data.ui
         resources.qrc
         settings_main.h settings_main.cpp settings_main.ui
+        change_location.h change_location.cpp change_location.ui
 
     )
 # Define target properties for Android with Qt 6 as:

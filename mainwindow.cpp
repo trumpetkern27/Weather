@@ -255,6 +255,7 @@ void MainWindow::openAdvancedSettings() {
     settingsDialog->activateWindow();
 }
 
+// open the settings window
 void MainWindow::openSettings() {
     if (!settingsWindow) {
         settingsWindow = new settings_main(this);

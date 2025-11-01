@@ -21,7 +21,7 @@ class fetch : public QObject
     Q_OBJECT
 public:
     explicit fetch(QObject *parent = nullptr);
-
+    void promptCity();
     void getForecast(const QString &forecastUrl);
 public slots:
     void getWeather();
@@ -36,7 +36,7 @@ private:
     void setLocation();
     void loadLocation();
     void getWeatherData();
-    void promptCity();
+
     void getCityCoordinates(const QString &cityName, std::function<void(bool)> callback);
     double lat = 500, lon = 500;
 };
