@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // update weather every 10 mins
-    weather_harvester = new fetch;
+    weather_harvester = new fetch(this);
     weather_clock = new QTimer(this);
     connect(weather_clock, &QTimer::timeout, weather_harvester, &fetch::getWeather);
     weather_clock->start(600000);

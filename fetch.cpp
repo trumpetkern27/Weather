@@ -10,7 +10,7 @@ QString userAgent = QString("WeatherWidget/%1 (UserID/%2)")
 
 
 //QString userAgent = QString("weather-widget/1.0 (+https://github.com/trumpetkern27/weather)");
-fetch::fetch(QObject *parent) : QObject(parent) {
+fetch::fetch(QWidget *parentWidget, QObject *parent) : QObject(parent), mainWidget(parentWidget) {
     manager = new QNetworkAccessManager(this);
 
 }
@@ -187,12 +187,12 @@ void fetch::getLocation() {
 // prompt location
 void fetch::promptCity() {
 
-    cityPrompt *prompt = new cityPrompt();
+    prompt = new cityPrompt(mainWidget);
     prompt->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(prompt, &cityPrompt::cityEntered, this, [this, prompt](const QString &city) {
+    connect(prompt, &cityPrompt::cityEntered, this, [this](const QString &city) {
 
-        getCityCoordinates(city, [this, prompt](bool success) {
+        getCityCoordinates(city, [this](bool success) {
             if (success) {
 
                 prompt->setVisible(false);
@@ -206,8 +206,12 @@ void fetch::promptCity() {
         });
 
     });
+    prompt->setWindowFlag(Qt::Dialog);
+    prompt->setWindowModality(Qt::WindowModal);
 
     prompt->show();
+    prompt->raise();
+    prompt->activateWindow();
 
 
 }
@@ -232,18 +236,40 @@ void fetch::getCityCoordinates(const QString &cityName, std::function<void(bool)
 
             if (!results.isEmpty()) {
                 QJsonObject location = results[0].toObject();
-                lat = location["lat"].toString().toDouble();
-                lon = location["lon"].toString().toDouble();
+                double test_lat = location["lat"].toString().toDouble();
+                double test_lon = location["lon"].toString().toDouble();
 
-                setLocation();
-
-                success = true;
+                verifyCoordinates(test_lat, test_lon, callback);
+                reply->deleteLater();
+                return;
             }
+        }
+        callback(false);
+        reply->deleteLater();
+    });
+
+}
+
+void fetch::verifyCoordinates(double test_lat, double test_lon, std::function<void(bool)> callback) {
+    QString url = QString("https://api.weather.gov/points/%1,%2")
+                        .arg(test_lat, 0, 'f', 4)
+                        .arg(test_lon, 0, 'f', 4);
+    QNetworkRequest request{QUrl(url)};
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent.toUtf8());
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, test_lat, test_lon, callback] {
+        bool success = false;
+        if (!reply->error()) {
+            lat = test_lat;
+            lon = test_lon;
+            setLocation();
+            success = true;
+            qDebug() << "coordinates verified" << lat << lon;
         }
         callback(success);
         reply->deleteLater();
     });
-
 }
 
 

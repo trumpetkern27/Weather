@@ -20,7 +20,7 @@ weather::weather() {
     int y = screenGeometry.bottom();
     setGeometry(100,100,150,tBarHeight);
     setWindowFlags(Qt::ToolTip | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
-    setStyleSheet("background-color: red");
+    //setStyleSheet("background-color: red");
     setMouseTracking(true);
 
     // load pos

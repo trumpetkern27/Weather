@@ -15,12 +15,13 @@
 #include <QGeoPositionInfoSource>
 #include <QSettings>
 #include <QTimer>
+#include "cityprompt.h"
 
 class fetch : public QObject
 {
     Q_OBJECT
 public:
-    explicit fetch(QObject *parent = nullptr);
+    explicit fetch(QWidget *parentWidget, QObject *parent = nullptr);
     void promptCity();
     void getForecast(const QString &forecastUrl);
 public slots:
@@ -39,6 +40,11 @@ private:
 
     void getCityCoordinates(const QString &cityName, std::function<void(bool)> callback);
     double lat = 500, lon = 500;
+    cityPrompt *prompt = nullptr;
+
+    QWidget *mainWidget;
+
+    void verifyCoordinates(double lat, double lon, std::function<void(bool)> callback);
 };
 
 #endif // FETCH_H
