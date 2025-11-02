@@ -417,7 +417,11 @@ void MainWindow::updateGroupBox(QGroupBox *groupBox, double value, const QString
 
 
         // put it on the bar
-
+        QLabel *label = parentWidget()->findChild<QLabel*>();
+        if (label) {
+            label->setText(displayText);
+        }
+        /*
         PAINTSTRUCT ps;
         HWND hWnd = (HWND)parentWidget()->winId();
 
@@ -434,7 +438,7 @@ void MainWindow::updateGroupBox(QGroupBox *groupBox, double value, const QString
         std::wstring wtext = displayText.toStdWString();
         DrawText(hdc, wtext.c_str(), -1, &rc, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
         ReleaseDC(hWnd, hdc);
-
+        */
 
     } else if (property.contains("humidity", Qt::CaseInsensitive) ||
                property.contains("probability", Qt::CaseInsensitive) ||
