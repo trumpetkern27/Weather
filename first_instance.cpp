@@ -161,6 +161,7 @@ void first_instance::saveSettings() {
     settings.setValue("width", dummy->width());
     settings.setValue("height", dummy->height());
     settings.setValue("autoLocation", ui->locationDetect->checkState());
+    settings.setValue("uom", "C"); // yes, celsius is superior
 }
 
 //ensure window is topmost on taskbar

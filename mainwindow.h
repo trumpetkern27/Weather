@@ -12,12 +12,20 @@
 #include "helpers.h"
 #include <QPushButton>
 #include "settings_main.h"
+#include <windows.h>
+#include <dwmapi.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+struct weather_value {
+    double value;
+    QString unit;
+    bool isValid;
+};
 
 class MainWindow : public QMainWindow
 {
@@ -45,5 +53,13 @@ private:
     QPushButton *gear;
     void openAdvancedSettings();
     void openSettings();
+
+    void update_grid_data(QJsonDocument doc);
+    void update_grid_data_observation(QJsonDocument doc);
+
+    weather_value extractWeatherValue(const QJsonObject& properties, const QString& apiProperty, bool isObservation);
+    void updateGroupBox(QGroupBox *groupBox, double value, const QString &uom, const QString &property);
+
+    COLORREF GetTaskbarColor();
 };
 #endif // MAINWINDOW_H

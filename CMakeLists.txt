@@ -58,7 +58,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(weather PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Positioning shell32 user32)
+target_link_libraries(weather PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Positioning shell32 user32 dwmapi)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

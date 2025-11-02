@@ -23,6 +23,13 @@ weather::weather() {
     //setStyleSheet("background-color: red");
     setMouseTracking(true);
 
+    label = new QLabel("loading...", this);
+    label->setAlignment(Qt::AlignCenter);
+    label->setStyleSheet("color: white; font-size: 14px");
+    label->setGeometry(0, 0, width, height);
+    label->show();
+
+
     // load pos
     loadPosition(x, y);
 
@@ -101,6 +108,7 @@ void weather::enforceTopmost() {
 
 
     SetWindowPos(hwnd, HWND_TOPMOST, posX, posY, width, height, SWP_NOACTIVATE);
+
 }
 
 

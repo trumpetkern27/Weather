@@ -62,11 +62,16 @@ void fetch::getWeatherData() {
             QJsonDocument doc = QJsonDocument::fromJson(data);
             QJsonObject obj = doc.object();
             QJsonObject properties = obj["properties"].toObject();
-            qDebug() << "properties:" << properties;
-            QString forecastUrl = properties["forecast"].toString();
+
+            QString forecastUrl = properties["forecastGridData"].toString();
 
             // Now fetch the actual forecast
             getForecast(forecastUrl);
+
+            // get local forecast
+            QString observationsUrl = properties["observationStations"].toString();
+
+            getObservationStations(observationsUrl);
         }
         reply->deleteLater();
     });
@@ -89,26 +94,86 @@ void fetch::getForecast(const QString &forecastUrl) {
         } else {
             QByteArray data = reply->readAll();
 
+            emit weatherDataReceived(data);
+
+
+        }
+        reply->deleteLater();
+    });
+}
+
+void fetch::getObservationStations(const QString &stationsUrl) {
+
+    QNetworkRequest request{QUrl(stationsUrl)};
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent.toUtf8());
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        if (!reply->error()) {
+            QByteArray responseData = reply->readAll();
+
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonObject root = doc.object();
+
+            // Try different paths to find the stations array
+
+            QJsonArray stations;
+
+            // Could be at different paths depending on response format
+            if (root.contains("observationStations")) {
+                stations = root["observationStations"].toArray();
+            } else if (root.contains("features")) {
+                stations = root["features"].toArray();
+            }
+
+
+            if (!stations.isEmpty()) {
+
+                // Check if it's a string (URL) or object
+                if (stations[0].isString()) {
+                    QString stationUrl = stations[0].toString();
+
+                    // Extract ID from URL
+                    QStringList parts = stationUrl.split('/');
+                    QString stationId = parts.isEmpty() ? "" : parts.last();
+
+                    if (!stationId.isEmpty()) {
+                        getLatestObservation(stationId);
+                    }
+                } else if (stations[0].isObject()) {
+                    QJsonObject stationObj = stations[0].toObject();
+
+                    // Try to find station ID in properties
+                    QJsonObject props = stationObj["properties"].toObject();
+                    QString stationId = props["stationIdentifier"].toString();
+
+                    if (!stationId.isEmpty()) {
+                        getLatestObservation(stationId);
+                    }
+                }
+            }
+        }
+        reply->deleteLater();
+    });
+}
+
+void fetch::getLatestObservation(const QString &stationId) {
+    QString url = QString("https://api.weather.gov/stations/%1/observations/latest").arg(stationId);
+
+    QNetworkRequest request{QUrl(url)};
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent.toUtf8());
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, url]() {
+        if (!reply->error()) {
+            QByteArray data = reply->readAll();
+
+            qDebug() << data;
+
             QJsonDocument doc = QJsonDocument::fromJson(data);
             QJsonObject root = doc.object();
             QJsonObject properties = root["properties"].toObject();
-            QJsonArray periods = properties["periods"].toArray();
-
-            if (!periods.isEmpty()) {
-                QJsonObject currentPeriod = periods[0].toObject();
-
-                QString name = currentPeriod["name"].toString();
-                int temp = currentPeriod["temperature"].toInt();
-                QString tempUnit = currentPeriod["temperatureUnit"].toString();
-                QString shortForecast = currentPeriod["shortForecast"].toString();
-                QString detailedForecast = currentPeriod["detailedForecast"].toString();
-
-                qDebug() << name << ":" << temp << tempUnit;
-                qDebug() << shortForecast;
-                qDebug() << detailedForecast;
-                emit weatherDataReceived(data);
-            }
-
+            emit stationDataReceived(data);
         }
         reply->deleteLater();
     });
@@ -265,7 +330,6 @@ void fetch::verifyCoordinates(double test_lat, double test_lon, std::function<vo
             lon = test_lon;
             setLocation();
             success = true;
-            qDebug() << "coordinates verified" << lat << lon;
         }
         callback(success);
         reply->deleteLater();

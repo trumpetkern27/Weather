@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTimer>
+#include <QLabel>
 
 
 class weather : public QWidget {
@@ -27,6 +28,8 @@ private:
     void enforceTopmost();
 
     QMainWindow *main;
+
+    QLabel *label;
 };
 
 

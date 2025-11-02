@@ -28,6 +28,7 @@ public slots:
     void getWeather();
 signals:
     void weatherDataReceived(const QByteArray &data);
+    void stationDataReceived(const QByteArray &data);
     void errorOccurred(const QString &error);
 
 private:
@@ -37,6 +38,8 @@ private:
     void setLocation();
     void loadLocation();
     void getWeatherData();
+    void getObservationStations(const QString &stationsUrl);
+    void getLatestObservation(const QString &stationId);
 
     void getCityCoordinates(const QString &cityName, std::function<void(bool)> callback);
     double lat = 500, lon = 500;

@@ -22,6 +22,19 @@ settings_main::settings_main(QWidget *parent)
     connect(ui->buttonRestart, &QPushButton::clicked, this, [this] () {
         ResetAll();
     });
+
+
+
+    connect(ui->groupBox_units, &QGroupBox::toggled, this, [this] () {
+        QSettings settings("weatherWidget", "weather");
+
+        if (ui->radioCelsius->isChecked()) {
+            settings.setValue("uom", "C");
+        } else {
+            settings.setValue("uom", "F");
+        }
+
+    });
 }
 
 settings_main::~settings_main()
