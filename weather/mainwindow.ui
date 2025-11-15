@@ -6,23 +6,878 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Weather Dashboard</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainVerticalLayout">
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>966</width>
+         <height>1398</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBoxTemperature">
+          <property name="title">
+           <string>Temperature</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutTemperature">
+           <item>
+            <widget class="QLabel" name="labelTemperature">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBoxDewpoint">
+          <property name="title">
+           <string>Dewpoint</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutDewpoint">
+           <item>
+            <widget class="QLabel" name="labelDewpoint">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBoxMaxTemperature">
+          <property name="title">
+           <string>Max Temperature</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutMaxTemperature">
+           <item>
+            <widget class="QLabel" name="labelMaxTemperature">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="groupBoxMinTemperature">
+          <property name="title">
+           <string>Min Temperature</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutMinTemperature">
+           <item>
+            <widget class="QLabel" name="labelMinTemperature">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QGroupBox" name="groupBoxRelativeHumidity">
+          <property name="title">
+           <string>Relative Humidity</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutRelativeHumidity">
+           <item>
+            <widget class="QLabel" name="labelRelativeHumidity">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- %</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QGroupBox" name="groupBoxApparentTemperature">
+          <property name="title">
+           <string>Apparent Temperature</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutApparentTemperature">
+           <item>
+            <widget class="QLabel" name="labelApparentTemperature">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QGroupBox" name="groupBoxWetBulbGlobeTemperature">
+          <property name="title">
+           <string>Wet Bulb Globe Temp</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWetBulbGlobeTemperature">
+           <item>
+            <widget class="QLabel" name="labelWetBulbGlobeTemperature">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QGroupBox" name="groupBoxHeatIndex">
+          <property name="title">
+           <string>Heat Index</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutHeatIndex">
+           <item>
+            <widget class="QLabel" name="labelHeatIndex">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QGroupBox" name="groupBoxWindChill">
+          <property name="title">
+           <string>Wind Chill</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWindChill">
+           <item>
+            <widget class="QLabel" name="labelWindChill">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °C</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QGroupBox" name="groupBoxSkyCover">
+          <property name="title">
+           <string>Sky Cover</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutSkyCover">
+           <item>
+            <widget class="QLabel" name="labelSkyCover">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- %</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QGroupBox" name="groupBoxWindDirection">
+          <property name="title">
+           <string>Wind Direction</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWindDirection">
+           <item>
+            <widget class="QLabel" name="labelWindDirection">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QGroupBox" name="groupBoxWindSpeed">
+          <property name="title">
+           <string>Wind Speed</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWindSpeed">
+           <item>
+            <widget class="QLabel" name="labelWindSpeed">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- km/h</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QGroupBox" name="groupBoxWindGust">
+          <property name="title">
+           <string>Wind Gust</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWindGust">
+           <item>
+            <widget class="QLabel" name="labelWindGust">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- km/h</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QGroupBox" name="groupBoxWeather">
+          <property name="title">
+           <string>Weather Conditions</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWeather">
+           <item>
+            <widget class="QLabel" name="labelWeather">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>--</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QGroupBox" name="groupBoxHazards">
+          <property name="title">
+           <string>Hazards</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutHazards">
+           <item>
+            <widget class="QLabel" name="labelHazards">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>None</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QGroupBox" name="groupBoxProbabilityOfPrecipitation">
+          <property name="title">
+           <string>Precip Probability</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutProbabilityOfPrecipitation">
+           <item>
+            <widget class="QLabel" name="labelProbabilityOfPrecipitation">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- %</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QGroupBox" name="groupBoxQuantitativePrecipitation">
+          <property name="title">
+           <string>Precipitation Amount</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutQuantitativePrecipitation">
+           <item>
+            <widget class="QLabel" name="labelQuantitativePrecipitation">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- mm</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QGroupBox" name="groupBoxIceAccumulation">
+          <property name="title">
+           <string>Ice Accumulation</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutIceAccumulation">
+           <item>
+            <widget class="QLabel" name="labelIceAccumulation">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- mm</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QGroupBox" name="groupBoxSnowfallAmount">
+          <property name="title">
+           <string>Snowfall Amount</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutSnowfallAmount">
+           <item>
+            <widget class="QLabel" name="labelSnowfallAmount">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- mm</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QGroupBox" name="groupBoxSnowLevel">
+          <property name="title">
+           <string>Snow Level</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutSnowLevel">
+           <item>
+            <widget class="QLabel" name="labelSnowLevel">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- m</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QGroupBox" name="groupBoxCeilingHeight">
+          <property name="title">
+           <string>Ceiling Height</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutCeilingHeight">
+           <item>
+            <widget class="QLabel" name="labelCeilingHeight">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- m</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="QGroupBox" name="groupBoxVisibility">
+          <property name="title">
+           <string>Visibility</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutVisibility">
+           <item>
+            <widget class="QLabel" name="labelVisibility">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- m</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QGroupBox" name="groupBoxTransportWindSpeed">
+          <property name="title">
+           <string>Transport Wind Speed</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutTransportWindSpeed">
+           <item>
+            <widget class="QLabel" name="labelTransportWindSpeed">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- km/h</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="QGroupBox" name="groupBoxTransportWindDirection">
+          <property name="title">
+           <string>Transport Wind Direction</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutTransportWindDirection">
+           <item>
+            <widget class="QLabel" name="labelTransportWindDirection">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QGroupBox" name="groupBoxMixingHeight">
+          <property name="title">
+           <string>Mixing Height</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutMixingHeight">
+           <item>
+            <widget class="QLabel" name="labelMixingHeight">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- m</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QGroupBox" name="groupBoxHainesIndex">
+          <property name="title">
+           <string>Haines Index</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutHainesIndex">
+           <item>
+            <widget class="QLabel" name="labelHainesIndex">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>--</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QGroupBox" name="groupBoxLightningActivityLevel">
+          <property name="title">
+           <string>Lightning Activity</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutLightningActivityLevel">
+           <item>
+            <widget class="QLabel" name="labelLightningActivityLevel">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>--</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="13" column="1">
+         <widget class="QGroupBox" name="groupBoxTwentyFootWindSpeed">
+          <property name="title">
+           <string>20-Foot Wind Speed</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutTwentyFootWindSpeed">
+           <item>
+            <widget class="QLabel" name="labelTwentyFootWindSpeed">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- km/h</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QGroupBox" name="groupBoxTwentyFootWindDirection">
+          <property name="title">
+           <string>20-Foot Wind Direction</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutTwentyFootWindDirection">
+           <item>
+            <widget class="QLabel" name="labelTwentyFootWindDirection">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="QGroupBox" name="groupBoxWaveHeight">
+          <property name="title">
+           <string>Wave Height</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWaveHeight">
+           <item>
+            <widget class="QLabel" name="labelWaveHeight">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- m</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="15" column="0">
+         <widget class="QGroupBox" name="groupBoxWavePeriod">
+          <property name="title">
+           <string>Wave Period</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWavePeriod">
+           <item>
+            <widget class="QLabel" name="labelWavePeriod">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- s</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QGroupBox" name="groupBoxWaveDirection">
+          <property name="title">
+           <string>Wave Direction</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutWaveDirection">
+           <item>
+            <widget class="QLabel" name="labelWaveDirection">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- °</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="16" column="0">
+         <widget class="QGroupBox" name="groupBoxProbabilityOfThunder">
+          <property name="title">
+           <string>Thunder Probability</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutProbabilityOfThunder">
+           <item>
+            <widget class="QLabel" name="labelProbabilityOfThunder">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>-- %</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QGroupBox" name="groupBoxAtmosphericDispersionIndex">
+          <property name="title">
+           <string>Atmospheric Dispersion</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutAtmosphericDispersionIndex">
+           <item>
+            <widget class="QLabel" name="labelAtmosphericDispersionIndex">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>--</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="17" column="0">
+         <widget class="QGroupBox" name="groupBoxLowVisibilityOccurrenceRiskIndex">
+          <property name="title">
+           <string>Low Visibility Risk</string>
+          </property>
+          <layout class="QVBoxLayout" name="layoutLowVisibilityOccurrenceRiskIndex">
+           <item>
+            <widget class="QLabel" name="labelLowVisibilityOccurrenceRiskIndex">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>--</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
