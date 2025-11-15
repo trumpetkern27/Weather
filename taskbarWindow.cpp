@@ -202,36 +202,6 @@ void weather::enforceTopmost() {
     }
 
 
-
-    /* Get foreground window
-    HWND foreground = GetForegroundWindow();
-
-    // If there’s a full-screen window, skip forcing topmost
-    if (foreground && foreground != hwnd) {
-        MONITORINFO mi = { sizeof(mi) };
-        HMONITOR monitor = MonitorFromWindow(foreground, MONITOR_DEFAULTTOPRIMARY);
-        GetMonitorInfo(monitor, &mi);
-
-        RECT rc;
-        GetWindowRect(foreground, &rc);
-
-        // Check if the foreground window fills the screen (fullscreen)
-        if (rc.left <= mi.rcMonitor.left &&
-            rc.top <= mi.rcMonitor.top &&
-            rc.right >= mi.rcMonitor.right &&
-            rc.bottom >= mi.rcMonitor.bottom) {
-            // Fullscreen detected — don’t set topmost
-
-            SetWindowPos(hwnd, HWND_NOTOPMOST, posX, posY, width, height, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-
-            return;
-        }
-    }
-
-
-
-    SetWindowPos(hwnd, HWND_TOPMOST, posX, posY, width, height, SWP_NOACTIVATE);
-    */
 }
 
 
