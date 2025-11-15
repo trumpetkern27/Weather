@@ -10,9 +10,12 @@
 #include <QThread>
 #include "fetch.h"
 #include "settings_data.h"
+#include <QCoreApplication>
+#include <QDir>
 
 void check_first_instance();
 bool first_instance_setup();
+void addToStartup();
 
 
 int main(int argc, char *argv[])
@@ -39,6 +42,7 @@ void check_first_instance(){
 
             QCoreApplication::processEvents();
             QThread::msleep(100);
+            addToStartup();
             return;
         } else {
             exit(0);
@@ -57,4 +61,11 @@ bool first_instance_setup() {
     f->exec();
     delete f;
     return true;
+}
+
+void addToStartup() {
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                       QSettings::NativeFormat);
+    QString appPath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
+    settings.setValue("WeatherWidget", appPath);
 }

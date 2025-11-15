@@ -455,8 +455,6 @@ void MainWindow::updateGroupBox(QGroupBox *groupBox, double value, const QString
         displayText = QString::number(value, 'f', 1);
     }
 
-    qDebug() << displayText << property;
-
     QLabel *label = groupBox->findChild<QLabel*>();
 
     if (label) {

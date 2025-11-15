@@ -168,7 +168,6 @@ void fetch::getLatestObservation(const QString &stationId) {
         if (!reply->error()) {
             QByteArray data = reply->readAll();
 
-            qDebug() << data;
 
             QJsonDocument doc = QJsonDocument::fromJson(data);
             QJsonObject root = doc.object();
